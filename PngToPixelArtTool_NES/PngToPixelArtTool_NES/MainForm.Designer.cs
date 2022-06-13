@@ -33,8 +33,14 @@
             this.fIleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox_Original = new System.Windows.Forms.PictureBox();
+            this.pictureBox_Pixelated = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Original)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Pixelated)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -67,11 +73,46 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox_Original, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox_Pixelated, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 28);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1156, 407);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // pictureBox_Original
+            // 
+            this.pictureBox_Original.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox_Original.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox_Original.Name = "pictureBox_Original";
+            this.pictureBox_Original.Size = new System.Drawing.Size(572, 319);
+            this.pictureBox_Original.TabIndex = 0;
+            this.pictureBox_Original.TabStop = false;
+            // 
+            // pictureBox_Pixelated
+            // 
+            this.pictureBox_Pixelated.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox_Pixelated.Location = new System.Drawing.Point(581, 3);
+            this.pictureBox_Pixelated.Name = "pictureBox_Pixelated";
+            this.pictureBox_Pixelated.Size = new System.Drawing.Size(572, 319);
+            this.pictureBox_Pixelated.TabIndex = 1;
+            this.pictureBox_Pixelated.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1156, 435);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -79,6 +120,9 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Original)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Pixelated)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -90,6 +134,9 @@
         private System.Windows.Forms.ToolStripMenuItem fIleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.PictureBox pictureBox_Original;
+        private System.Windows.Forms.PictureBox pictureBox_Pixelated;
     }
 }
 
