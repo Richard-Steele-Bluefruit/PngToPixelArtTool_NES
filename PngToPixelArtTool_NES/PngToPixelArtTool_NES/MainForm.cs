@@ -81,9 +81,16 @@ namespace PngToPixelArtTool_NES
     public MainForm()
         {
             InitializeComponent();
+
+            ChooseImageFileAndProcess();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChooseImageFileAndProcess();
+        }
+
+        void ChooseImageFileAndProcess()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "PNG files|*.png";
@@ -92,8 +99,10 @@ namespace PngToPixelArtTool_NES
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                int numberOfPixelsWidth = 80;
-                int numberOfPixelsHeight = 80;
+                int numberOfPixelsWidth = 32;
+                int numberOfPixelsHeight = 32;
+
+                int maxPaletteSize = 4;
 
                 Bitmap originalBmp = new Bitmap(openFileDialog.FileName);
                 Bitmap pixelatedBmp = new Bitmap(numberOfPixelsWidth, numberOfPixelsHeight);
@@ -155,13 +164,13 @@ namespace PngToPixelArtTool_NES
                 }
 
                 pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
-
+                pixelatedBmp.Dispose();
 
                 var colourCountList = colourCount.ToList();
 
                 colourCountList.Sort((a, b) => b.Value.CompareTo(a.Value));
 
-                int finalNumberOfColours = 5;
+                int finalNumberOfColours = colourCountList.Count > maxPaletteSize ? maxPaletteSize : colourCountList.Count;
 
                 Color[] finalColours = new Color[finalNumberOfColours];
 
@@ -180,20 +189,27 @@ namespace PngToPixelArtTool_NES
                 }
 
                 pictureBox_ClosestMatch.Image = ResizeImage(ClosestMatchBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
-                pictureBox_ClosestMatchFour.Image = ResizeImage(ClosestMatchFourBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
+                ClosestMatchBmp.Dispose();
 
+                pictureBox_ClosestMatchFour.Image = ResizeImage(ClosestMatchFourBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
+                ClosestMatchFourBmp.Dispose();
+
+
+                pictureBox_Original.Image = ResizeImage(originalBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
+                originalBmp.Dispose();
+                
                 //MessageBox.Show($"Success {openFileDialog.FileName}", "Title", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
         }
 
         Bitmap ResizeImage(Image image, int width, int height)
         {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
+            Rectangle destRect = new Rectangle(0, 0, width, height);
+            Bitmap destImage = new Bitmap(width, height);
 
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
-            using (var graphics = Graphics.FromImage(destImage))
+            using (Graphics graphics = Graphics.FromImage(destImage))
             {
                 graphics.CompositingMode = CompositingMode.SourceCopy;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -201,7 +217,7 @@ namespace PngToPixelArtTool_NES
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-                using (var wrapMode = new ImageAttributes())
+                using (ImageAttributes wrapMode = new ImageAttributes())
                 {
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
                     graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
