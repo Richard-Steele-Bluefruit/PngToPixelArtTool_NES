@@ -98,8 +98,11 @@ namespace PngToPixelArtTool_NES
                 Bitmap originalBmp = new Bitmap(openFileDialog.FileName);
                 Bitmap pixelatedBmp = new Bitmap(numberOfPixelsWidth, numberOfPixelsHeight);
                 Bitmap ClosestMatchBmp = new Bitmap(numberOfPixelsWidth, numberOfPixelsHeight);
+                Bitmap ClosestMatchFourBmp = new Bitmap(numberOfPixelsWidth, numberOfPixelsHeight);
 
                 pictureBox_Original.Image = originalBmp;
+
+                Dictionary<Color, int> colourCount = new Dictionary<Color, int>();
 
                 int xStep = originalBmp.Width / numberOfPixelsWidth;
                 int yStep = originalBmp.Height / numberOfPixelsHeight;
@@ -132,15 +135,52 @@ namespace PngToPixelArtTool_NES
                         g /= numPixels;
                         b /= numPixels;
 
-                        Color c = Color.FromArgb(r, g, b);
+                        Color averageColour = Color.FromArgb(r, g, b);
 
-                        pixelatedBmp.SetPixel(x, y, c);
-                        ClosestMatchBmp.SetPixel(x, y, GetClosestColourFromArray(c, NESColours));
+                        pixelatedBmp.SetPixel(x, y, averageColour);
+
+                        Color nearestColour = GetClosestColourFromArray(averageColour, NESColours);
+
+                        ClosestMatchBmp.SetPixel(x, y, nearestColour);
+
+                        if (colourCount.ContainsKey(nearestColour))
+                        {
+                            colourCount[nearestColour] += 1;
+                        }
+                        else
+                        {
+                            colourCount.Add(nearestColour, 1);
+                        }
                     }
                 }
 
-                pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, originalBmp.Width, originalBmp.Height);
-                pictureBox_ClosestMatch.Image = ResizeImage(ClosestMatchBmp, originalBmp.Width, originalBmp.Height);
+                pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
+
+
+                var colourCountList = colourCount.ToList();
+
+                colourCountList.Sort((a, b) => b.Value.CompareTo(a.Value));
+
+                int finalNumberOfColours = 5;
+
+                Color[] finalColours = new Color[finalNumberOfColours];
+
+                for (int i = 0; i < finalNumberOfColours; i++)
+                {
+                    finalColours[i] = colourCountList[i].Key;
+                }
+
+                for (int x = 0; x < numberOfPixelsWidth; x++)
+                {
+                    for (int y = 0; y < numberOfPixelsHeight; y++)
+                    {
+                        Color NESPaletteColour = ClosestMatchBmp.GetPixel(x, y); ;
+                        ClosestMatchFourBmp.SetPixel(x, y, GetClosestColourFromArray(NESPaletteColour, finalColours));
+                    }
+                }
+
+                pictureBox_ClosestMatch.Image = ResizeImage(ClosestMatchBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
+                pictureBox_ClosestMatchFour.Image = ResizeImage(ClosestMatchFourBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);// originalBmp.Width, originalBmp.Height);
 
                 //MessageBox.Show($"Success {openFileDialog.FileName}", "Title", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
