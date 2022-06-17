@@ -239,7 +239,7 @@ namespace PngToPixelArtTool_NES
         Color GetClosestColourFromArray(Color inputColor, Color[] choices)
         {
             Color returnValue = Color.Empty;
-            double tempBestDistance = 500;
+            double tempBestDistance = 1000;
 
             foreach (Color c in choices)
             {
