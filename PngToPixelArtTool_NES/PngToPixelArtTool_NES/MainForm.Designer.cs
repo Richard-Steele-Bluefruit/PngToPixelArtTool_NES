@@ -59,6 +59,10 @@
             this.panel0 = new System.Windows.Forms.Panel();
             this.pictureBox_Original = new System.Windows.Forms.PictureBox();
             this.pictureBox_PaletteImage = new System.Windows.Forms.PictureBox();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pixelatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nESPaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.finalNESPaletteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -97,7 +101,8 @@
             // fIleToolStripMenuItem
             // 
             this.fIleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem});
             this.fIleToolStripMenuItem.Name = "fIleToolStripMenuItem";
             this.fIleToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fIleToolStripMenuItem.Text = "File";
@@ -472,6 +477,37 @@
             this.pictureBox_PaletteImage.TabIndex = 10;
             this.pictureBox_PaletteImage.TabStop = false;
             // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pixelatedToolStripMenuItem,
+            this.nESPaletteToolStripMenuItem,
+            this.finalNESPaletteToolStripMenuItem});
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "Save As";
+            // 
+            // pixelatedToolStripMenuItem
+            // 
+            this.pixelatedToolStripMenuItem.Name = "pixelatedToolStripMenuItem";
+            this.pixelatedToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pixelatedToolStripMenuItem.Text = "Pixelated";
+            this.pixelatedToolStripMenuItem.Click += new System.EventHandler(this.pixelatedToolStripMenuItem_Click);
+            // 
+            // nESPaletteToolStripMenuItem
+            // 
+            this.nESPaletteToolStripMenuItem.Name = "nESPaletteToolStripMenuItem";
+            this.nESPaletteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.nESPaletteToolStripMenuItem.Text = "NES palette";
+            this.nESPaletteToolStripMenuItem.Click += new System.EventHandler(this.nESPaletteToolStripMenuItem_Click);
+            // 
+            // finalNESPaletteToolStripMenuItem
+            // 
+            this.finalNESPaletteToolStripMenuItem.Name = "finalNESPaletteToolStripMenuItem";
+            this.finalNESPaletteToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.finalNESPaletteToolStripMenuItem.Text = "Final NES palette";
+            this.finalNESPaletteToolStripMenuItem.Click += new System.EventHandler(this.finalNESPaletteToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -547,6 +583,10 @@
         private System.Windows.Forms.Panel panel0;
         private System.Windows.Forms.PictureBox pictureBox_Original;
         private System.Windows.Forms.PictureBox pictureBox_PaletteImage;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pixelatedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nESPaletteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem finalNESPaletteToolStripMenuItem;
     }
 }
 

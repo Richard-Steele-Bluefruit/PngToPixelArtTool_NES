@@ -107,9 +107,19 @@ namespace PngToPixelArtTool_NES
                 ProcessImage();
 
                 // Have to bring to front first time
-                this.WindowState = FormWindowState.Minimized;
+                this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
                 this.Show();
-                this.WindowState = FormWindowState.Normal;
+                this.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            }
+        }
+
+        void SaveImageFile(Image image)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                image.Save(saveFileDialog.FileName + ".png", ImageFormat.Png);
             }
         }
 
@@ -201,6 +211,8 @@ namespace PngToPixelArtTool_NES
                 pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, pictureBox_Original.Width, pictureBox_Original.Height);
                 pixelatedBmp.Dispose();
 
+                // Pick final colours
+
                 textBox_FinalNESPaletteCodes.Text = "";
 
                 var colourCountList = colourCount.ToList();
@@ -211,7 +223,7 @@ namespace PngToPixelArtTool_NES
 
                 Color[] finalColours = new Color[finalNumberOfColours];
 
-                for (int i = 0; i < finalNumberOfColours; i++)
+                for (int i = 0; i < finalNumberOfColours-1; i++)
                 {
                     finalColours[i] = colourCountList[i].Key;
 
@@ -340,6 +352,21 @@ namespace PngToPixelArtTool_NES
         private void numericUpDown_NumPaletteValues_ValueChanged(object sender, EventArgs e)
         {
             ProcessImage();
+        }
+
+        private void pixelatedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImageFile(pictureBox_Pixelated.Image);
+        }
+
+        private void nESPaletteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImageFile(pictureBox_ClosestMatch.Image);
+        }
+
+        private void finalNESPaletteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveImageFile(pictureBox_ClosestMatchFour.Image);
         }
     }
 }
