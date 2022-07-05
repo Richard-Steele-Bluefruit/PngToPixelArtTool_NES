@@ -78,6 +78,7 @@ namespace PngToPixelArtTool_NES
         };
 
         Bitmap originalBmp;
+        string thisFileName;
 
     public MainForm()
         {
@@ -102,6 +103,10 @@ namespace PngToPixelArtTool_NES
             {
                 originalBmp = new Bitmap(openFileDialog.FileName);
 
+                string[] filePathArray = openFileDialog.FileName.Split('\\');
+                string[] fileNameArray = filePathArray[filePathArray.Count()-1].Split('.');
+                thisFileName = fileNameArray[0];
+
                 pictureBox_Original.Image = ResizeImage(originalBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);
 
                 ProcessImage();
@@ -113,13 +118,15 @@ namespace PngToPixelArtTool_NES
             }
         }
 
-        void SaveImageFile(Image image)
+        void SaveImageFile(Image image, string appendString)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = @"PNG|*.png";
+            saveFileDialog.FileName = thisFileName + appendString;
 
             if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                image.Save(saveFileDialog.FileName + ".png", ImageFormat.Png);
+                image.Save(saveFileDialog.FileName, ImageFormat.Png);
             }
         }
 
@@ -356,17 +363,17 @@ namespace PngToPixelArtTool_NES
 
         private void pixelatedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveImageFile(pictureBox_Pixelated.Image);
+            SaveImageFile(pictureBox_Pixelated.Image, $"_pixelated_{numericUpDown_PixelWidth.Value}x{numericUpDown_PixelHeight.Value}");
         }
 
         private void nESPaletteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveImageFile(pictureBox_ClosestMatch.Image);
+            SaveImageFile(pictureBox_ClosestMatch.Image, $"_fullNESPalette_{numericUpDown_PixelWidth.Value}x{numericUpDown_PixelHeight.Value}");
         }
 
         private void finalNESPaletteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveImageFile(pictureBox_ClosestMatchFour.Image);
+            SaveImageFile(pictureBox_ClosestMatchFour.Image, $"_finalNESPalette_Size{numericUpDown_NumPaletteValues.Value}_{numericUpDown_PixelWidth.Value}x{numericUpDown_PixelHeight.Value}");
         }
     }
 }
