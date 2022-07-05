@@ -85,6 +85,11 @@ namespace PngToPixelArtTool_NES
             InitializeComponent();
 
             LoadImageFile();
+
+            // Have to bring to front first time
+            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.Show();
+            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -95,9 +100,9 @@ namespace PngToPixelArtTool_NES
         void LoadImageFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "PNG files|*.png";
+            openFileDialog.Filter = "Image files|*.png;*jpg";
             openFileDialog.Multiselect = false;
-            openFileDialog.Title = "Select image.png file";
+            openFileDialog.Title = "Select image file";
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -110,11 +115,6 @@ namespace PngToPixelArtTool_NES
                 pictureBox_Original.Image = ResizeImage(originalBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);
 
                 ProcessImage();
-
-                // Have to bring to front first time
-                this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-                this.Show();
-                this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             }
         }
 
