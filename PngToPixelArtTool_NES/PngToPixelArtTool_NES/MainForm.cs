@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PngToPixelArtTool_NES
@@ -87,9 +83,9 @@ namespace PngToPixelArtTool_NES
             LoadImageFile();
 
             // Have to bring to front first time
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.WindowState = FormWindowState.Minimized;
             this.Show();
-            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,7 +100,7 @@ namespace PngToPixelArtTool_NES
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Select image file";
 
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 originalBmp = new Bitmap(openFileDialog.FileName);
 
@@ -112,7 +108,7 @@ namespace PngToPixelArtTool_NES
                 string[] fileNameArray = filePathArray[filePathArray.Count()-1].Split('.');
                 thisFileName = fileNameArray[0];
 
-                pictureBox_Original.Image = ResizeImage(originalBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);
+                pictureBox_Original.Image = ResizeImage(originalBmp, pictureBox_Original.Width, pictureBox_Original.Height);
 
                 ProcessImage();
             }
@@ -124,7 +120,7 @@ namespace PngToPixelArtTool_NES
             saveFileDialog.Filter = @"PNG|*.png";
             saveFileDialog.FileName = thisFileName + appendString;
 
-            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 image.Save(saveFileDialog.FileName, ImageFormat.Png);
             }
@@ -174,7 +170,7 @@ namespace PngToPixelArtTool_NES
 
                         if (numPixels == 0)
                         {
-                            MessageBox.Show("Exceeds picture dimensions", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                            MessageBox.Show("Exceeds image dimensions", "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 
                             if (checkBox_LinkWidthAndHeight.Enabled)
                             {
@@ -215,7 +211,7 @@ namespace PngToPixelArtTool_NES
                     }
                 }
 
-                pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, pictureBox_Original.Width, pictureBox_Original.Height);
+                pictureBox_Pixelated.Image = ResizeImage(pixelatedBmp, pictureBox_Pixelated.Width, pictureBox_Pixelated.Height);
                 pixelatedBmp.Dispose();
 
                 // Pick final colours
@@ -223,14 +219,13 @@ namespace PngToPixelArtTool_NES
                 textBox_FinalNESPaletteCodes.Text = "";
 
                 var colourCountList = colourCount.ToList();
-
                 colourCountList.Sort((a, b) => b.Value.CompareTo(a.Value));
 
                 int finalNumberOfColours = colourCountList.Count > maxPaletteSize ? maxPaletteSize : colourCountList.Count;
 
                 Color[] finalColours = new Color[finalNumberOfColours];
 
-                for (int i = 0; i < finalNumberOfColours-1; i++)
+                for (int i = 0; i < finalNumberOfColours; i++)
                 {
                     finalColours[i] = colourCountList[i].Key;
 
@@ -244,18 +239,15 @@ namespace PngToPixelArtTool_NES
                         Color NESPaletteColour = ClosestMatchBmp.GetPixel(x, y);
 
                         ClosestMatchFourBmp.SetPixel(x, y, GetClosestColourFromArray(NESPaletteColour, finalColours));
-
-                        // label_FinalNESPaletteCodes.Text += GetNESColourCodeFromPalette(NESPaletteColour);
                     }
                 }
 
-                pictureBox_ClosestMatch.Image = ResizeImage(ClosestMatchBmp, pictureBox_Original.Width, pictureBox_Original.Height);// originalBmp.Width, originalBmp.Height);
+                pictureBox_ClosestMatch.Image = ResizeImage(ClosestMatchBmp, pictureBox_ClosestMatch.Width, pictureBox_ClosestMatch.Height);
                 ClosestMatchBmp.Dispose();
 
-                pictureBox_ClosestMatchFour.Image = ResizeImage(ClosestMatchFourBmp, pictureBox_Original.Width, pictureBox_Original.Height);// originalBmp.Width, originalBmp.Height);
+                pictureBox_ClosestMatchFour.Image = ResizeImage(ClosestMatchFourBmp, pictureBox_ClosestMatchFour.Width, pictureBox_ClosestMatchFour.Height);
                 ClosestMatchFourBmp.Dispose();
-
-
+                
                 //MessageBox.Show($"Success {openFileDialog.FileName}", "Title", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
         }
@@ -310,7 +302,7 @@ namespace PngToPixelArtTool_NES
         Color GetClosestColourFromArray(Color inputColor, Color[] choices)
         {
             Color returnValue = Color.Empty;
-            double tempBestDistance = 1000;
+            double tempBestDistance = double.MaxValue;
 
             foreach (Color c in choices)
             {
